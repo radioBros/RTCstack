@@ -73,6 +73,8 @@ export class MockCall extends EventEmitter<CallEventMap> {
       connectionQuality: p.connectionQuality ?? 'excellent',
       videoTrack: null,
       audioTrack: null,
+      screenShareTrack: null,
+      isScreenSharing: false,
       isLocal: p.isLocal ?? false,
       metadata: p.metadata ?? {},
     }

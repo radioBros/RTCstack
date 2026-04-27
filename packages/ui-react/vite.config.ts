@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 
 export default defineConfig({
-  plugins: [react(), dts({ rollupTypes: true })],
+  plugins: [react(), dts({ rollupTypes: true, exclude: ['**/*.stories.*'], compilerOptions: { skipLibCheck: true } })],
   build: {
     lib: {
       entry: 'src/index.ts',

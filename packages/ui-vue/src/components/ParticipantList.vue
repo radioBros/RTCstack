@@ -2,7 +2,7 @@
 import { useParticipants, useLocalParticipant } from '../composables.js'
 import { computed } from 'vue'
 
-withDefaults(defineProps<{ class?: string }>(), {})
+const props = withDefaults(defineProps<{ class?: string }>(), {})
 
 const remote = useParticipants()
 const local = useLocalParticipant()

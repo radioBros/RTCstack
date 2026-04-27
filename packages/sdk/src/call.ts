@@ -6,7 +6,6 @@ import {
   ConnectionQuality as LKQuality,
   type Participant as LKParticipant,
   Track,
-  DataPacket_Kind,
 } from 'livekit-client'
 import { EventEmitter } from './events.js'
 import type {
@@ -214,7 +213,7 @@ export class Call extends EventEmitter<CallEventMap> {
     room.on(RoomEvent.DataReceived, (payload: Uint8Array, participant?: RemoteParticipant) => {
       try {
         const text = new TextDecoder().decode(payload)
-        const data = JSON.parse(text) as { type: string; text?: string; emoji?: string; id?: string }
+        const data = JSON.parse(text) as { type: string; text?: string; emoji?: string; id?: string; speakerId?: string; speaker?: string; startMs?: number }
 
         if (data.type === 'chat' && data.text) {
           const msg: Message = {
@@ -230,18 +229,18 @@ export class Call extends EventEmitter<CallEventMap> {
         } else if (data.type === 'reaction' && data.emoji) {
           this.emit('reactionReceived', participant?.identity ?? 'unknown', data.emoji)
         } else if (data.type === 'speaking') {
-          const speakerId = (data.speakerId as string) ?? participant?.identity ?? 'unknown'
-          const speakerName = (data.speaker as string) ?? participant?.name ?? participant?.identity ?? 'unknown'
+          const speakerId = data.speakerId ?? participant?.identity ?? 'unknown'
+          const speakerName = data.speaker ?? participant?.name ?? participant?.identity ?? 'unknown'
           this.emit('speakingStarted', speakerId, speakerName)
         } else if (data.type === 'transcript' && data.text) {
-          const speakerId = (data.speakerId as string) ?? participant?.identity ?? 'unknown'
+          const speakerId = data.speakerId ?? participant?.identity ?? 'unknown'
           this.emit('speakingStopped', speakerId)
           const segment: TranscriptSegment = {
             text: data.text as string,
-            speaker: (data.speaker as string) ?? participant?.name ?? participant?.identity ?? 'unknown',
+            speaker: data.speaker ?? participant?.name ?? participant?.identity ?? 'unknown',
             speakerId,
             timestamp: new Date(),
-            startMs: data.startMs as number | undefined,
+            ...(data.startMs !== undefined && { startMs: data.startMs }),
           }
           this.emit('transcriptReceived', segment)
         }
@@ -312,18 +311,18 @@ export class Call extends EventEmitter<CallEventMap> {
     const payload = new TextEncoder().encode(data)
     if (options?.to?.length) {
       await this.room.localParticipant.publishData(payload, {
-        kind: DataPacket_Kind.RELIABLE,
+        reliable: true,
         destinationIdentities: options.to,
       })
     } else {
-      await this.room.localParticipant.publishData(payload, { kind: DataPacket_Kind.RELIABLE })
+      await this.room.localParticipant.publishData(payload, { reliable: true })
     }
   }
 
   async sendReaction(emoji: string): Promise<void> {
     const data = JSON.stringify({ type: 'reaction', emoji })
     const payload = new TextEncoder().encode(data)
-    await this.room.localParticipant.publishData(payload, { kind: DataPacket_Kind.RELIABLE })
+    await this.room.localParticipant.publishData(payload, { reliable: true })
   }
 
   setLayout(layout: Layout): void {

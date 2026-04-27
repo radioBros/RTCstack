@@ -1,13 +1,15 @@
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useCall, useLocalParticipant, useLayout } from '../composables.js'
-import DeviceSelector from './DeviceSelector.vue'
-
+<script lang="ts">
 export type ControlBarButton =
   | 'mic' | 'camera' | 'screenshare'
   | 'reactions' | 'layout' | 'devices' | 'leave'
 
-const ALL_BUTTONS: ControlBarButton[] = ['mic', 'camera', 'screenshare', 'reactions', 'layout', 'devices', 'leave']
+export const ALL_BUTTONS: ControlBarButton[] = ['mic', 'camera', 'screenshare', 'reactions', 'layout', 'devices', 'leave']
+</script>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useCall, useLocalParticipant, useLayout } from '../composables.js'
+import DeviceSelector from './DeviceSelector.vue'
 
 const props = withDefaults(defineProps<{
   buttons?: ControlBarButton[]

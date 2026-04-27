@@ -46,10 +46,10 @@ const listOpen = ref(props.showParticipants)
   </div>
   <div v-else class="rtc-conference" :class="props.class">
     <div class="rtc-conference__main">
-      <VideoGrid class="rtc-conference__grid" :participant-video-props="participantVideoProps" />
+      <VideoGrid class="rtc-conference__grid" v-bind="props.participantVideoProps !== undefined ? { participantVideoProps: props.participantVideoProps } : {}" />
       <ControlBar
         class="rtc-conference__controls"
-        :buttons="controlBarButtons"
+        v-bind="props.controlBarButtons !== undefined ? { buttons: props.controlBarButtons } : {}"
         @leave="emit('leave')"
       />
     </div>

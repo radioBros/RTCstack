@@ -76,7 +76,7 @@ function renderTile(
   if (!isScreenShare && p.audioTrack && !p.isLocal) {
     const audio = document.createElement('audio')
     audio.autoplay = true
-    audio.playsInline = true
+    ;(audio as HTMLAudioElement & { playsInline: boolean }).playsInline = true
     audio.srcObject = new MediaStream([p.audioTrack])
     audio.play().catch(() => {})
     tile.appendChild(audio)

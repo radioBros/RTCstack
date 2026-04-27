@@ -1,6 +1,6 @@
 {
   "name": "@rtcstack/ui-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -13,6 +13,9 @@
     },
     "./styles.css": "./dist/styles.css"
   },
+  "repository": { "type": "git", "url": "https://github.com/radioBros/RTCstack" },
+  "homepage": "https://github.com/radioBros/RTCstack",
+  "bugs": { "url": "https://github.com/radioBros/RTCstack/issues" },
   "files": ["dist", "README.md"],
   "publishConfig": { "access": "public" },
   "scripts": {

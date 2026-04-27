@@ -2,7 +2,7 @@
 import { watch, nextTick, ref } from 'vue'
 import { useTranscription, useSpeakingIndicators } from '../composables.js'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   maxItems?: number
   showSpeakerName?: boolean
 }>(), {
@@ -23,11 +23,11 @@ watch([transcripts, speaking], async () => {
 <template>
   <div class="rtc-transcript-panel" role="log" aria-live="polite" aria-label="Live transcript">
     <div
-      v-for="(seg, i) in maxItems > 0 ? transcripts.slice(-maxItems) : transcripts"
+      v-for="(seg, i) in props.maxItems > 0 ? transcripts.slice(-props.maxItems) : transcripts"
       :key="i"
       class="rtc-transcript-panel__entry"
     >
-      <span v-if="showSpeakerName" class="rtc-transcript-panel__speaker">{{ seg.speaker }}</span>
+      <span v-if="props.showSpeakerName" class="rtc-transcript-panel__speaker">{{ seg.speaker }}</span>
       <span class="rtc-transcript-panel__text">{{ seg.text }}</span>
     </div>
     <div
