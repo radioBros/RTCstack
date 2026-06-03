@@ -1,0 +1,45 @@
+# ── Mobile build artifacts — never commit ──────────────────────────────
+
+# Android / Gradle
+android/.gradle/
+android/.kotlin/
+android/build/
+android/*/build/
+android/local.properties
+android/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Keep the Gradle wrapper committed (gradlew, gradlew.bat, gradle/wrapper/*)
+# so teammates don't have to regenerate it — do NOT ignore it.
+
+# iOS / Swift Package Manager
+ios/.build/
+ios/.swiftpm/
+**/*.xcodeproj/xcuserdata/
+**/*.xcodeproj/project.xcworkspace/xcuserdata/
+**/*.xcworkspace/xcuserdata/
+DerivedData/
+*.xcuserstate
+
+# SPM resolved versions: this is a library package, so consumers resolve their
+# own graph — don't pin ours into the repo.
+ios/Package.resolved
+
+# CocoaPods (if UI podspec consumers vendor pods locally)
+ios/Pods/
+
+# macOS cruft
+.DS_Store
+
+# ── Internal dev / handoff docs — not shipped to consumers ──────────────
+MAC_HANDOFF.md
+*_HANDOFF.md
+/development/
+**/development/

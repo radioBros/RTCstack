@@ -9,3 +9,7 @@ Thumbs.db
 .pnpm-store/
 coverage/
 .nyc_output/
+
+# Internal dev / handoff docs — not shipped
+*_HANDOFF.md
+development/

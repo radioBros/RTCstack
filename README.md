@@ -68,6 +68,7 @@ RTCstack separates media from signalling. There are two independent data paths:
 | S3-compatible recording storage via MinIO | ✅ |
 | React, Vue 3, Vanilla JS UI kits | ✅ |
 | Framework-agnostic TypeScript SDK | ✅ |
+| Native iOS + Android SDKs & UI kits | ✅ |
 
 ---
 
@@ -143,17 +144,20 @@ rtcStack/
 ├── apps/
 │   ├── api/                    # Fastify REST API (Node.js / TypeScript)
 │   ├── playground/             # Interactive dev playground
-│   ├── website/                # VitePress documentation site
 │   └── examples/
-│       ├── react-example/      # React reference app
-│       ├── vue-example/        # Vue 3 reference app
-│       └── vanilla-example/    # Vanilla JS reference app
+│       ├── react/              # React reference app
+│       ├── vue/                # Vue 3 reference app
+│       └── vanilla/            # Vanilla JS reference app
 │
 ├── packages/
 │   ├── sdk/                    # @rtcstack/sdk — framework-agnostic SDK
 │   ├── ui-react/               # @rtcstack/ui-react — React component library
 │   ├── ui-vue/                 # @rtcstack/ui-vue — Vue 3 component library
 │   └── ui-vanilla/             # @rtcstack/ui-vanilla — Vanilla JS library
+│
+├── mobile/                     # Native SDKs + UI kits
+│   ├── ios/                    # RTCstackKit / RTCstackUI (Swift Package)
+│   └── android/                # com.rtcstack:sdk / :ui-compose (Gradle)
 │
 ├── services/
 │   ├── whisper/                # Whisper STT HTTP service (Python)
@@ -169,7 +173,6 @@ rtcStack/
 │   ├── egress.yaml             # Recording config
 │   └── turnserver.conf         # coturn TURN/STUN config
 │
-├── development/                # Architecture plans and standards docs
 ├── turbo.json                  # Turborepo task pipeline
 └── pnpm-workspace.yaml
 ```
@@ -307,6 +310,19 @@ const { unmount } = mountVideoConference(document.getElementById('room'), { call
 // When done:
 unmount()
 ```
+
+---
+
+### Native mobile (iOS + Android)
+
+The same `Call` surface, event model, and data-channel wire format, implemented natively so mobile
+and web clients share rooms:
+
+- **iOS** — `RTCstackKit` / `RTCstackUI` (Swift Package, wraps `client-sdk-swift`)
+- **Android** — `com.rtcstack:sdk` / `com.rtcstack:ui-compose` (wraps `io.livekit:livekit-android`)
+
+Build/test/integration details: [`mobile/README.md`](mobile/README.md). Cross-platform wire-format
+contract: [`packages/sdk/WIRE_FORMAT.md`](packages/sdk/WIRE_FORMAT.md).
 
 ---
 
@@ -623,7 +639,7 @@ Three ready-to-run reference apps are in `apps/examples/`.
 ### React
 
 ```bash
-cd apps/examples/react-example
+cd apps/examples/react
 pnpm install
 pnpm dev
 ```
@@ -631,7 +647,7 @@ pnpm dev
 ### Vue 3
 
 ```bash
-cd apps/examples/vue-example
+cd apps/examples/vue
 pnpm install
 pnpm dev
 ```
@@ -639,10 +655,14 @@ pnpm dev
 ### Vanilla JS
 
 ```bash
-cd apps/examples/vanilla-example
+cd apps/examples/vanilla
 pnpm install
 pnpm dev
 ```
+
+### Native (iOS / Android)
+
+Native reference apps and build instructions live in [`mobile/`](mobile/README.md).
 
 All examples expect the API to be running at `http://localhost:3246`. Edit `src/config.ts` (or equivalent) to point at a remote stack.
 

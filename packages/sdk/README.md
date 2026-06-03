@@ -167,6 +167,17 @@ interface TranscriptSegment {
 }
 ```
 
+## Native mobile SDKs
+
+iOS and Android SDKs mirror this same `Call` surface, event model, and data-channel wire format,
+so native and web clients interoperate in the same room:
+
+- **iOS** — `RTCstackKit` / `RTCstackUI` (Swift Package, wraps `client-sdk-swift`)
+- **Android** — `com.rtcstack:sdk` / `com.rtcstack:ui-compose` (wraps `io.livekit:livekit-android`)
+
+The cross-platform contract is documented in [`WIRE_FORMAT.md`](./WIRE_FORMAT.md). See
+[`../../mobile/README.md`](../../mobile/README.md) for build, test, and integration details.
+
 ## Testing with MockCall
 
 ```typescript
